@@ -1,7 +1,6 @@
 FROM openresty/openresty:alpine
 
-RUN apk --no-cache add --virtual .run-deps ca-certificates
-
+RUN apk --no-cache add --virtual .run-deps ca-certificates curl
 
 RUN rm /usr/local/openresty/nginx/conf/nginx.conf
 
