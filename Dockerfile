@@ -1,4 +1,4 @@
-FROM openresty/openresty:alpine
+FROM openresty/openresty:alpine-fat
 
 RUN apk --no-cache add --virtual .run-deps ca-certificates curl
 
