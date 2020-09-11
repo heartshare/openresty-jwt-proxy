@@ -2,6 +2,8 @@ FROM openresty/openresty:alpine
 
 RUN apk --no-cache add --virtual .run-deps ca-certificates curl
 
+RUN luarocks install lua-resty-jwt
+
 RUN rm /usr/local/openresty/nginx/conf/nginx.conf
 
 RUN mkdir /usr/local/openresty/nginx-jwt
