@@ -20,13 +20,12 @@ if os.getenv("JWT_SECRETS_IS_BASE64_ENCODED") == 'true' then
     secrets = string.gsub(secrets, "_", "/")
 
     -- convert from Base64 to UTF-8 string
-    secrets = basexx.from_base64(secret)
+    secrets = basexx.from_base64(secrets)
     ngx.log(ngx.INFO, "Decoded Secret: " .. secrets)
 end
 
 -- Going now to JSON Decode the fun
 local secrets = cjson.decode(secrets)
-
 
 local M = {}
 
