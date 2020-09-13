@@ -25,7 +25,7 @@ if os.getenv("JWT_SECRETS_IS_BASE64_ENCODED") == 'true' then
 end
 
 -- Going now to JSON Decode the fun
-local secrets = json.decode(secrets)
+local secrets = cjson.decode(secrets)
 
 
 local M = {}
