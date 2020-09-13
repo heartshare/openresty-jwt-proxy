@@ -52,15 +52,18 @@ function M.auth(claim_specs)
 
     local jwt_obj = jwt:load_jwt(token)
     if not jwt_obj.valid then
+        ngx.log(ngx.INFO, "Token seems to be INVALID")
         return ngx.exit(403)
     end
 
     local kid = jwt_obj.payload.kid
     if not kid then
+        ngx.log(ngx.INFO, "kid not found within payload")
         return ngx.exit(403)
     end
 
     if secrets[kid] == nil then
+      ngx.log(ngx.INFO, "kid does not exist in given secrets")
       return ngx.exit(403)
     end
 
