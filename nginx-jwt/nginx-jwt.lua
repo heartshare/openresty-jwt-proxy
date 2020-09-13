@@ -65,7 +65,7 @@ function M.auth(claim_specs)
     secret = secrets[kid]
 
     -- require valid JWT
-    local jwt_obj = jwt:verify(secret, token)
+    local jwt_obj = jwt:verify_jwt_obj(secret, jwt_obj)
     if jwt_obj.verified == false then
         ngx.log(ngx.WARN, "Invalid token: ".. jwt_obj.reason)
         ngx.exit(ngx.HTTP_UNAUTHORIZED)
