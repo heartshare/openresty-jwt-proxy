@@ -1,25 +1,29 @@
 local jwt = require "resty.jwt"
 local cjson = require "cjson"
 local basexx = require "basexx"
-local secret = os.getenv("JWT_SECRET")
+local secrets = os.getenv("JWT_SECRETS")
 
-assert(secret ~= nil, "Environment variable JWT_SECRET not set")
+assert(secretS ~= nil, "Environment variable JWT_SECRETS not set")
 
 if os.getenv("JWT_SECRET_IS_BASE64_ENCODED") == 'true' then
     -- convert from URL-safe Base64 to Base64
-    local r = #secret % 4
+    local r = #secrets % 4
     if r == 2 then
-        secret = secret .. "=="
+        secrets = secrets .. "=="
     elseif r == 3 then
-        secret = secret .. "="
+        secrets = secrets .. "="
     end
-    secret = string.gsub(secret, "-", "+")
-    secret = string.gsub(secret, "_", "/")
+    secrets = string.gsub(secrets, "-", "+")
+    secrets = string.gsub(secrets, "_", "/")
 
     -- convert from Base64 to UTF-8 string
-    secret = basexx.from_base64(secret)
-    ngx.log(ngx.INFO, "Decoded Secret: " .. secret)
+    secrets = basexx.from_base64(secret)
+    ngx.log(ngx.INFO, "Decoded Secret: " .. secrets)
 end
+
+-- Going now to JSON Decode the fun
+local secrets = json.decode(secrets)
+
 
 local M = {}
 
@@ -43,6 +47,22 @@ function M.auth(claim_specs)
     end
 
     ngx.log(ngx.INFO, "Token: " .. token)
+
+    local jwt_obj = jwt:load_jwt(token)
+    if not jwt_obj.valid then
+        return ngx.exit(403)
+    end
+
+    local kid = jwt_obj.payload.kid
+    if not kid then
+        return ngx.exit(403)
+    end
+
+    if secrets[kid] == nil then
+      return ngx.exit(403)
+    end
+
+    secret = secrets[kid]
 
     -- require valid JWT
     local jwt_obj = jwt:verify(secret, token)
