@@ -1,6 +1,9 @@
 local jwt = require "resty.jwt"
+local hmac = require "resty.hmac"
+
 local cjson = require "cjson"
 local basexx = require "basexx"
+
 local secrets = os.getenv("JWT_SECRETS")
 
 assert(secretS ~= nil, "Environment variable JWT_SECRETS not set")

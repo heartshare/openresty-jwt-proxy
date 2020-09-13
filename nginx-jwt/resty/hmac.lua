@@ -101,7 +101,7 @@ else
         C.HMAC_CTX_init(ctx)
         return ctx
     end
-    ctx_free = function (ctx) 
+    ctx_free = function (ctx)
         C.HMAC_CTX_cleanup(ctx)
     end
 end
