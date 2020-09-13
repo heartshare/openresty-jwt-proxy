@@ -3,6 +3,7 @@ local hmac = require "resty.hmac"
 
 local cjson = require "cjson"
 local basexx = require "basexx"
+local inspect = require('inspect')
 
 local secrets = os.getenv("JWT_SECRETS")
 
@@ -56,7 +57,7 @@ function M.auth(claim_specs)
         return ngx.exit(403)
     end
 
-    ngx.log(ngx.INFO, "Token Payload: " .. jwt_obj.payload)
+    ngx.log(ngx.INFO, "Token Payload: " .. inspect(jwt_obj.payload))
 
     local kid = jwt_obj.payload.kid
     if not kid then
