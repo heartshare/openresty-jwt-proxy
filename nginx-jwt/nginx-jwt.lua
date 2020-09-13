@@ -6,7 +6,7 @@ local basexx = require "basexx"
 
 local secrets = os.getenv("JWT_SECRETS")
 
-assert(secretS ~= nil, "Environment variable JWT_SECRETS not set")
+assert(secrets ~= nil, "Environment variable JWT_SECRETS not set")
 
 if os.getenv("JWT_SECRETS_IS_BASE64_ENCODED") == 'true' then
     -- convert from URL-safe Base64 to Base64
